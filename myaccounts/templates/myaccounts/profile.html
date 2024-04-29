@@ -1,0 +1,26 @@
+{% extends 'shared/_mainLayout.html' %}
+{% load render_partial %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+    <div class="col-md-8">
+    <table>
+        <tr>
+            <th>نام : </th>
+            <td>{{ request.user.first_name }}</td>
+        </tr>
+        <tr>
+            <th>نام خانوادگی : </th>
+            <td>{{ request.user.last_name }}</td>
+        </tr>
+        <tr>
+            <th>ایمیل : </th>
+            <td>{{ request.user.email }}</td>
+        </tr>
+    </table>
+    </div>
+    {% render_partial 'myaccounts.views.profile_menu' %}
+</div>
+</div>
+{% endblock %}

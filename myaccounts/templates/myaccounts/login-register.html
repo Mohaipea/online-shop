@@ -1,0 +1,84 @@
+{% extends 'shared/_MainLayout.html' %}
+
+{% block content %}
+    {% if page == 'login' %}
+        <div class="container">
+            <section id="form"><!--form-->
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-1">
+                        <div class="login-form"><!--login form-->
+                            <h2>ورود به حساب کاربـری :</h2>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <lable for="{{ form.username.id_for_label }}">{{ form.username.label }}</lable>
+                                {{ form.username }}
+                                {% for error in form.username.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+
+                                <lable for="{{ form.password.id_for_label }}">{{ form.password.label }}</lable>
+                                {{ form.password }}
+                                {% for error in form.password.errors %}
+                                    <p style="color: red"> {{ error }} </p>
+                                {% endfor %}
+                                <span>
+								<input type="checkbox" class="checkbox">
+								مرا بخاطـر بسپـار
+							</span>
+                                <span>
+								<a href="forget-password.html">رمـز عبـور خود را فراموش کرده ام</a>
+							</span>
+                                <button type="submit" class="btn btn-default">ورود</button>
+                                <p class="text-info"style="margin-top: 1vw">حساب کاربری ندارید؟</p>
+                                <button type="submit" href="{% url 'register' %}" class="btn btn-default">ثبت نام کنید
+                                </button>
+                            </form>
+                        </div><!--/login form-->
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!--/form-->
+    {% else %}
+        <div class="container">
+            <section id="form"><!--form-->
+                <div class="row">
+                    <div class="col-sm-4 col-sm-offset-1">
+                        <div class="signup-form"><!--sign up form-->
+                            <h2>ثبت نام کاربـر جدیـد</h2>
+                            <form method="POST">
+                                {% csrf_token %}
+                                <lable for="{{ form.username.id_for_label }}">{{ form.username.label }}</lable>
+                                {{ form.username }}
+                                {% for error in form.username.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+
+                                <lable for="{{ form.email.id_for_label }}">{{ form.email.label }}</lable>
+                                {{ form.email }}
+                                {% for error in form.email.errors %}
+                                    <p style="color: red">{{ error }}</p>
+                                {% endfor %}
+
+                                <lable for="{{ form.password.id_for_label }}">{{ form.password.label }}</lable>
+                                {{ form.password }}
+                                {% for error in form.password.errors %}
+                                    <p style="color: red"> {{ error }} </p>
+                                {% endfor %}
+
+                                <lable for="{{ form.confirm_password.id_for_label }}">{{ form.confirm_password.label }}</lable>
+                                {{ form.confirm_password }}
+                                {% for error in form.confirm_password.errors %}
+                                    <p style="color: red"> {{ error }} </p>
+                                {% endfor %}
+
+                                <button type="submit" class="btn btn-default">ثبت نام</button>
+                            </form>
+                        </div><!--/sign up form-->
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!--/form-->
+    {% endif %}
+{% endblock %}

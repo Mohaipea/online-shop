@@ -1,0 +1,41 @@
+{% extends 'shared/_mainLayout.html' %}
+{% load render_partial %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="contact-form">
+                    <h2 class="title text-center">ویرایش اطلاعات کاربری</h2>
+                    <div class="status alert alert-success" style="display: none"></div>
+                    <form id="main-contact-form" class="contact-form row" name="contact-form"
+                          action="{% url 'edit_profile' %}" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group col-md-6">
+                            {{ editForm.last_name }}
+                            {% for error in editForm.last_name.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ editForm.first_name }}
+                            {% for error in editForm.first_name.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-12">
+                            {{ editForm.email }}
+                            {% for error in editForm.email.errors %}
+                                <p class="text-danger">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                        <div class="form-group col-md-12">
+                            <input type="submit" name="submit" class="btn btn-primary pull-right" value="ارسـال">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% render_partial 'myaccounts.views.profile_menu' %}
+        </div>
+    </div>
+{% endblock %}

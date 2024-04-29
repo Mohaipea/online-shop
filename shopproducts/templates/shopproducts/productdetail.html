@@ -1,0 +1,195 @@
+{% extends 'shared/_MainLayout.html' %}
+{% load static %}
+{% load render_partial %}
+
+{% block content %}
+    <section>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-sm-9 padding-right">
+                    <div class="product-details"><!--product-details-->
+                        <div class="col-sm-5">
+                            <div class="view-product">
+                                <img src="{{ product.image.url }}" alt="{{ product.title }}">
+                                <h3>بزرگنمایـی</h3>
+                            </div>
+                            <div id="similar-product" class="carousel slide" data-ride="carousel">
+
+                                <!-- Wrapper for slides -->
+                                <div class="carousel-inner">
+                                    {% for item in gallery %}
+                                        <div class="item {{ forloop.first|yesno:'active,' }}">
+                                            {% for product in item %}
+                                                <a href=""><img src="{{ product.image.url }}" alt="{{ product.title }}"
+                                                                width="25%"></a>
+                                            {% endfor %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <!-- Controls -->
+                                <a class="right item-control" href="#similar-product" data-slide="next">
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                                <a class="left item-control" href="#similar-product" data-slide="prev">
+                                    <i class="fa fa-angle-left"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-7">
+                            <div class="product-information"><!--/product-information-->
+                                <img src="{% static 'images/product-details/new.png' %}" class="newarrival" alt="">
+                                <div>
+                                    <h2>{{ product.title }}</h2>
+                                    <p>شناسـه : {{ product.id }}</p>
+                                </div>
+                                <div>
+									<span>
+										<span>قیمت : {{ product.price }} تومان </span>
+									</span>
+                                    <span>
+                                        <form method="POST" action="/order/">
+                                            {% csrf_token %}
+                                            {{ order_form.product_id }}
+                                            <label>تعداد :</label>
+                                            {{ order_form.quantity }}
+										    <button type="submit" class="btn btn-fefault cart">
+											    <i class="fa fa-shopping-cart"></i>
+											    افـزودن به سبـد خرید
+                                            </button>
+                                        </form>
+
+									</span>
+                                </div>
+
+                                <span class="socials-share share">
+									<ul>
+										<a href="#">
+											<li>
+												<label>بلـه</label>
+												<img src="{% static 'images/product-details/Bale.png' %}">
+											</li>
+										</a>
+										<a href="#">
+											<li>
+												<label>سـروش</label>
+												<img src="{% static 'images/product-details/Soroush.png' %}">
+											</li>
+										</a>
+										<a href="#">
+											<li>
+												<label>اینستاگرام</label>
+												<img src="{% static 'images/product-details/Instagram.png' %}">
+											</li>
+										</a>
+									</ul>
+								</span>
+
+                            </div><!--/product-information-->
+                        </div>
+                    </div><!--/product-details-->
+
+                    <div class="category-tab shop-details-tab"><!--category-tab-->
+                        <div class="col-sm-12">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#details" data-toggle="tab">جزئیات</a></li>
+
+                                <li class=""><a href="#reviews" data-toggle="tab">نظرهای کاربران ({{ comments.count }})</a></li>
+
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active in" id="details">
+                                <div class="col-md-12">
+                                    <p>
+                                        {{ product.description }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="reviews">
+                                <div class="col-sm-12">
+                                    {% for comment in comments %}
+                                        <ul>
+                                            <li><a href=""><i class="fa fa-user"></i>{{ comment.user }}</a></li>
+                                            <li><a href=""><i class="fa fa-clock-o"></i>{{ comment.created|timesince }}
+                                                قبل </a></li>
+                                        </ul>
+                                        <p>{{ comment.comment }}</p>
+                                    {% endfor %}
+                                    <hr>
+                                    <form method="POST" action="">
+                                        {% csrf_token %}
+                                        <span>
+                                            <label style="margin-bottom: 1vw">
+                                                {{ form.user.label }}
+                                            </label>
+											{{ form.user }}
+
+                                            <label style="margin-top: 1vw">
+                                                {{ form.comment.label }}
+                                            </label>
+                                            {{ form.comment }}
+
+                                        <button type="submit" class="btn btn-default pull-left">
+                                            ارسـال
+                                        </button>
+                                        </span>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!--/category-tab-->
+
+                    <div class="recommended_items"><!--recommended_items-->
+                        <h2 class="title text-center">محصولات پیشنهادی</h2>
+
+                        <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+                            <div class="carousel-inner">
+                                {% for item in related_products %}
+                                    <div class="item {{ forloop.first|yesno:'active,' }}">
+                                        {% for product in item %}
+                                            <div class="col-sm-4">
+                                                <div class="product-image-wrapper">
+                                                    <div class="single-products">
+                                                        <div class="productinfo text-center">
+                                                            <img src="{{ product.image.url }}" alt="">
+                                                            <h2>{{ product.price }}</h2>
+                                                            <p>{{ product.description|truncatewords:5 }}</p>
+                                                            <button type="button" class="btn btn-default add-to-cart"><i
+                                                                    class="fa fa-shopping-cart"></i>افزودن به سبـد خریـد
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a class="left recommended-item-control" href="#recommended-item-carousel"
+                               data-slide="prev">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a class="right recommended-item-control" href="#recommended-item-carousel"
+                               data-slide="next">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </div>
+                    </div><!--/recommended_items-->
+
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="left-sidebar">
+                        {% render_partial 'categories_component' %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}
